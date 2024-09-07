@@ -10,6 +10,7 @@ export function ThemeToggle(props: React.ComponentProps<typeof Button>) {
 
   return (
     <Button
+      className="p-2"
       variant="ghost"
       size="icon"
       onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}

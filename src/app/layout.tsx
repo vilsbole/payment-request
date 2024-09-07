@@ -18,7 +18,6 @@ export const metadata: Metadata = {
     { media: "(prefers-color-scheme: light)", color: "white" },
     { media: "(prefers-color-scheme: dark)", color: "black" },
   ],
-  // metadataBase: new URL(siteConfig.url),
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon-16x16.png",
@@ -55,10 +54,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn("min-h-screen antialiased", fontSans.className)}>
-        <Providers>
-          {children}
-          <TailwindIndicator />
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

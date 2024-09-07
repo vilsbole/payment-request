@@ -1,132 +1,109 @@
-// TODO: Remove this entire file and start your own project from scratch.
-// Happy coding!
+"use client";
 
-import Link from "next/link";
-import { GithubIcon } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
-import { siteConfig } from "@/config";
-import { cn } from "@/lib/utils";
+import { createHDWallet } from "@/lib/wallet";
+import { Copyable } from "@/components/code";
+import { PaymentQRCode } from "@/components/organisms/payment-qr-code";
+import { PaymentRequestForm } from "@/components/organisms/payment-request-form";
+import { PaymentStatus } from "@/components/organisms/payment-status";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { buttonVariants } from "@/components/ui/button";
 
 export default function IndexPage() {
+  const [walletAddress, setWalletAddress] = useState<string>();
+  const [bip21Uri, setBip21Uri] = useState<string | undefined>();
+  const addressRef = useRef<HTMLDivElement>(null);
+
+  // Allow undefined uri to remove QR code when input field is empty
+  const handleFormSubmit = (uri?: string) => {
+    setBip21Uri(uri);
+  };
+
+  useEffect(() => {
+    async function generateWalletAddress() {
+      const { address } = await createHDWallet();
+      setWalletAddress(address);
+    }
+    generateWalletAddress();
+  }, []);
+
+  useEffect(() => {
+    if (bip21Uri && addressRef.current) {
+      addressRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    } else if (addressRef.current && !bip21Uri) {
+      addressRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, [bip21Uri]);
+
   return (
-    <main className="container grid max-w-prose items-center gap-6 space-y-4 pb-8 pt-6 text-balance md:py-10">
-      <div className="flex min-h-[50vh] flex-col justify-center gap-3">
-        <h1 className="text-5xl font-bold">{siteConfig.title}</h1>
-        <p className="text-slate-500">{siteConfig.description}</p>
-        <div className="space-x-2">
-          <Link
-            className={cn(buttonVariants(), "space-x-2")}
-            href="https://github.com/AhmedBaset/next-template"
-          >
-            <GithubIcon />
-            <span>Github</span>
-          </Link>
-          <ThemeToggle variant="outline" size="icon" />
+    <div className="container flex h-dvh max-w-prose flex-col">
+      <header className="grid items-center gap-6 space-y-2 text-balance pb-4 pt-6 md:py-8">
+        <ThemeToggle
+          className="justify-self-end"
+          variant="outline"
+          size="icon"
+        />
+      </header>
+      <main className="flex grow flex-col gap-4 text-balance pb-8 md:gap-6">
+        <div className="flex min-h-[25vh] flex-col justify-center gap-3 sm:min-h-[15vh]">
+          <h1 className="text-5xl font-bold">Request Payment</h1>
+          <p className="text-slate-500">
+            Next.js app which generates a testnet HD wallet and allows the user
+            to create a QRcode with a payment request.
+          </p>
         </div>
-      </div>
-      <div className="space-y-2">
-        <h2 className="text-3xl font-semibold">Included Features:</h2>
-        <ul className="list-disc ps-8 marker:text-2xl marker:text-primary-500/50">
-          <li>Next.js 13.4: App Router and Server Actions</li>
-          <li>Typescript</li>
-          <li>Tailwind CSS</li>
-          <li>
-            <Link href="https://ui.shadcn.com" target="_blank">
-              shadcn/ui
-            </Link>
-          </li>
-          <li>Lucide Icons</li>
-          <li>Next Themes: light/dark toggler</li>
-          <li>ESLint</li>
-          <li>Prettier with imports and tailwindcss classes sorting</li>
-        </ul>
-      </div>
+        <div className="grow">
+          {!walletAddress ? (
+            <div className="flex h-full">
+              <div className="mb-6 place-self-center text-slate-500 md:mb-8">
+                Generating HD Wallet...
+              </div>
+            </div>
+          ) : (
+            <div className="mx-auto flex flex-col gap-8 text-slate-500">
+              <div ref={addressRef}>
+                <span className="text-sm">Wallet address</span>
+                <Copyable
+                  data={walletAddress}
+                  className="text-md text-slate-100"
+                  inline={true}
+                />
+              </div>
 
-      <div className="space-y-2">
-        <h2 className="text-3xl font-semibold">Scripts:</h2>
-        <p className="text-opacity-90">
-          This template uses{" "}
-          <span className="font-bold text-primary">pnpm</span> as the package
-          manager. If you want to use other package managers, you can delete{" "}
-          <span className="font-bold text-primary">pnpm-lock.yaml</span> and run{" "}
-          <span className="font-bold text-primary">npm install</span> or{" "}
-          <span className="font-bold text-primary">yarn install</span>.
-        </p>
-        <ul className="list-disc ps-8 marker:text-2xl marker:text-primary-500/50">
-          <li>
-            <span className="font-bold text-primary">dev</span> Start the
-            development server
-          </li>
-          <li>
-            <span className="font-bold text-primary">build</span> Build for
-            production
-          </li>
-          <li>
-            <span className="font-bold text-primary">start</span> Start
-            production server
-          </li>
-          <li>
-            <span className="font-bold text-primary">preview</span> Build and
-            start production server
-          </li>
-          <li>
-            <span className="font-bold text-primary">lint</span> Lint code
-          </li>
-          <li>
-            <span className="font-bold text-primary">format</span> Format code
-          </li>
-          <li>
-            <span className="font-bold text-primary">format:check</span> Check
-            code formatting
-          </li>
-          <li>
-            <span className="font-bold text-primary">typecheck</span> Check
-            types
-          </li>
-          <li>
-            <span className="font-bold text-primary">ci-check</span> Run all
-            checks
-          </li>
-        </ul>
-      </div>
-
-      <div className="space-y-2">
-        <h2 className="text-3xl font-semibold">PNPM Cheat Sheet</h2>
-        <ul className="list-disc ps-8 marker:text-2xl marker:text-primary-500/50">
-          <li>
-            <span className="font-bold text-primary">pnpm install</span> Install
-            dependencies
-          </li>
-          <li>
-            <span className="font-bold text-primary">
-              pnpm add &lt;dependency&gt;
-            </span>{" "}
-            Add dependencies (-D for devDependencies)
-          </li>
-          <li>
-            <span className="font-bold text-primary">
-              pnpm dlx &lt;package&gt;
-            </span>{" "}
-            like npx
-          </li>
-          <li>
-            <span className="font-bold text-primary">
-              pnpm run &lt;script&gt;
-            </span>{" "}
-            Run scripts (or just{" "}
-            <span className="font-bold text-primary">pnpm &lt;script&gt;</span>{" "}
-            if there is no command conflict)
-          </li>
-          <li>
-            <span className="font-bold text-primary">pnpm update</span> Update
-            dependencies
-          </li>
-        </ul>
-      </div>
-      {/* eslint-disable-next-line tailwindcss/no-contradicting-classname */}
-      <div className="fixed -bottom-1/3 -right-1/3 -z-10 h-[50rem] w-[50rem] animate-pulse rounded-full ![animation-duration:5s] [background-image:radial-gradient(circle_at_center,#9994_0,transparent,transparent_100%)]" />
-    </main>
+              <section className="md:max-w-md">
+                <PaymentRequestForm
+                  address={walletAddress}
+                  onSubmit={handleFormSubmit}
+                />
+              </section>
+              {bip21Uri && (
+                <section className="my-8 md:max-w-md">
+                  <PaymentQRCode
+                    className="rounded-md border p-8"
+                    uri={bip21Uri}
+                  />
+                </section>
+              )}
+              {/* {bip21Uri && (
+                  <section>
+                    <PaymentStatus address={walletAddress} />
+                  </section>
+                )} */}
+            </div>
+          )}
+        </div>
+      </main>
+      <footer className="flex py-4 lg:py-6">
+        <div className="self-start">
+          <p className="text-sm text-gray-500">Made with ☕ in Paris</p>
+        </div>
+      </footer>
+    </div>
   );
 }
