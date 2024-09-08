@@ -1,17 +1,17 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-	name: "Next.js",
-	title: "Next.js Starter Template",
-	description:
-		"Next.js starter template with TypseScript, ESLint, Prettier, Tailwind CSS, and Shadcn/ui",
-	mainNav: [
-		{
-			title: "Home",
-			href: "/",
-		},
-	],
-	links: {
-		github: "https://github.com/AhmedBaset",
-	},
+  name: "Payment Request",
+  title: "Bitcoin Payment Request",
+  description:
+    "Create a payment request for Bitcoin and share it with your friends.",
+  mainNav: [
+    {
+      title: "Home",
+      href: "/",
+    },
+  ],
+  links: {
+    github: "https://github.com/vilsbole",
+  },
 };
