@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import { encodeBip21 } from "@/lib/bip21";
 import { createHDWallet } from "@/lib/wallet";
-import { Copyable } from "@/components/code";
+import { Copyable } from "@/components/copyable";
 import { PaymentQRCode } from "@/components/organisms/payment-qr-code";
 import { PaymentRequestForm } from "@/components/organisms/payment-request-form";
 import { PaymentStatus } from "@/components/organisms/payment-status";
@@ -77,9 +78,10 @@ export default function IndexPage() {
                 <span className="text-sm">Wallet address</span>
                 <Copyable
                   data={walletAddress}
-                  className="text-md text-slate-100"
+                  className="text-md dark:text-slate-100"
                   inline={true}
                 />
+                {bip21Uri && <PaymentStatus address={walletAddress} />}
               </div>
 
               <section className="md:max-w-md">
@@ -93,11 +95,6 @@ export default function IndexPage() {
                   />
                 </section>
               )}
-              {/* {bip21Uri && (
-                  <section>
-                    <PaymentStatus address={walletAddress} />
-                  </section>
-                )} */}
             </div>
           )}
         </div>

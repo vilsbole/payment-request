@@ -22,7 +22,7 @@ export const Copyable = ({ data, className, inline }: Props) => {
   return (
     <div
       className={cn(
-        "font-mono text-sm shadow-sm",
+        "font-mono text-sm",
         "flex flex-row items-center gap-2",
         className
       )}

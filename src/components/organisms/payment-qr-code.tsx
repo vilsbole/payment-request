@@ -2,7 +2,7 @@ import Image from "next/image";
 import qr from "qr-encode";
 
 import { cn } from "@/lib/utils";
-import { Copyable } from "@/components/code";
+import { Copyable } from "@/components/copyable";
 
 type Props = {
   uri: string;

@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type ControllerRenderProps } from "react-hook-form";
 import * as z from "zod";
 
-import { encodeBip21 } from "@/lib/bip21";
 import { Button } from "@/components/ui/button";
 import {
   Form,
