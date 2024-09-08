@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { encodeBip21 } from "@/lib/bip21";
 import { createHDWallet } from "@/lib/wallet";
 import { Copyable } from "@/components/copyable";
+import { Icons } from "@/components/icons";
 import { PaymentQRCode } from "@/components/organisms/payment-qr-code";
 import { PaymentRequestForm } from "@/components/organisms/payment-request-form";
 import { PaymentStatus } from "@/components/organisms/payment-status";
@@ -68,7 +69,8 @@ export default function IndexPage() {
         <div className="grow">
           {!walletAddress ? (
             <div className="flex h-full">
-              <div className="mb-6 place-self-center text-slate-500 md:mb-8">
+              <div className="mb-6 flex flex-row items-center place-self-center text-slate-500 md:mb-8">
+                <Icons.Loader size="1em" className="mr-1 animate-spin" />
                 Generating HD Wallet...
               </div>
             </div>
