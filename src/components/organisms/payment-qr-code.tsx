@@ -15,7 +15,7 @@ export const PaymentQRCode = ({ uri, className }: Props) => {
     <div className={cn("max-w-full", className)}>
       <Image
         src={dataURI}
-        layout="responsive"
+        className="w-full"
         width="50"
         height="50"
         alt="QR Code"
