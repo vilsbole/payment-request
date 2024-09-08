@@ -15,7 +15,13 @@ export default function IndexPage() {
   const addressRef = useRef<HTMLDivElement>(null);
 
   // Allow undefined uri to remove QR code when input field is empty
-  const handleFormSubmit = (uri?: string) => {
+  const handleFormSubmit = (amount?: number) => {
+    if (!walletAddress) {
+      throw new Error("Wallet address is not set");
+    }
+    const uri = amount
+      ? encodeBip21(walletAddress, { amount: amount })
+      : undefined;
     setBip21Uri(uri);
   };
 
@@ -77,10 +83,7 @@ export default function IndexPage() {
               </div>
 
               <section className="md:max-w-md">
-                <PaymentRequestForm
-                  address={walletAddress}
-                  onSubmit={handleFormSubmit}
-                />
+                <PaymentRequestForm onSubmit={handleFormSubmit} />
               </section>
               {bip21Uri && (
                 <section className="my-8 md:max-w-md">

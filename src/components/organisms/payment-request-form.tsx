@@ -18,26 +18,24 @@ import {
 import { Input } from "@/components/ui/input";
 
 type Props = {
-  address: string;
-  onSubmit: (bip21?: string) => void;
+  onSubmit: (amount?: number) => void;
 };
 
 const schema = z.object({
-  amount: z.coerce.number().min(0.00000001, "Required"),
+  amount: z.string().refine((v) => +v > 0, { message: "Amount is required" }),
 });
 
-export const PaymentRequestForm = ({ address, onSubmit }: Props) => {
+export const PaymentRequestForm = ({ onSubmit }: Props) => {
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
-      amount: 0,
+      amount: "",
     },
     mode: "onTouched",
   });
 
   async function handleFormSubmit(values: z.infer<typeof schema>) {
-    const uri = encodeBip21(address, { amount: values.amount });
-    onSubmit(uri);
+    onSubmit(+values.amount);
   }
 
   function handleChange(
@@ -52,7 +50,6 @@ export const PaymentRequestForm = ({ address, onSubmit }: Props) => {
     }
 
     // Only allow numbers and up to 8 decimal places
-    // TODO: convert to typeguard to avoid type assertion
     if (/^(?!0{2,})\d*(\.\d{0,8})?$/.test(value)) {
       field.onChange(value);
     }
@@ -71,10 +68,13 @@ export const PaymentRequestForm = ({ address, onSubmit }: Props) => {
                 <FormControl>
                   <div className="relative">
                     <Input
-                      placeholder="0"
+                      placeholder=""
                       type="text"
                       {...field}
                       onChange={(event) => handleChange(event, field)}
+                      onBlur={() => {
+                        form.clearErrors();
+                      }}
                     />
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                       <span className="text-sm text-gray-500">BTC</span>
