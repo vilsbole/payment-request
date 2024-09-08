@@ -1,8 +1,7 @@
 "use client";
 
-import { networkInterfaces } from "os";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, type ControllerRenderProps } from "react-hook-form";
 import * as z from "zod";
 
 import { encodeBip21 } from "@/lib/bip21";
@@ -41,7 +40,10 @@ export const PaymentRequestForm = ({ address, onSubmit }: Props) => {
     onSubmit(uri);
   }
 
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleChange(
+    event: React.ChangeEvent<HTMLInputElement>,
+    field: ControllerRenderProps<z.infer<typeof schema>, "amount">
+  ) {
     const value = event.target.value;
 
     // Clear form if input is empty
@@ -52,7 +54,7 @@ export const PaymentRequestForm = ({ address, onSubmit }: Props) => {
     // Only allow numbers and up to 8 decimal places
     // TODO: convert to typeguard to avoid type assertion
     if (/^(?!0{2,})\d*(\.\d{0,8})?$/.test(value)) {
-      form.setValue("amount", value as unknown as number);
+      field.onChange(value);
     }
   }
 
@@ -69,10 +71,10 @@ export const PaymentRequestForm = ({ address, onSubmit }: Props) => {
                 <FormControl>
                   <div className="relative">
                     <Input
-                      placeholder="Amount"
+                      placeholder="0"
                       type="text"
                       {...field}
-                      onChange={handleChange}
+                      onChange={(event) => handleChange(event, field)}
                     />
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                       <span className="text-sm text-gray-500">BTC</span>
@@ -87,7 +89,12 @@ export const PaymentRequestForm = ({ address, onSubmit }: Props) => {
             );
           }}
         />
-        <Button type="submit" variant="default" className="mt-4 w-full">
+        <Button
+          type="submit"
+          variant="default"
+          className="mt-4 w-full"
+          disabled={!form.formState.isValid}
+        >
           Create QRCode
         </Button>
       </form>
