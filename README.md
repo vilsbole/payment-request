@@ -1,68 +1,33 @@
-# Next.js Starter Template
+# Bitcoin Testnet Payement Request
 
-This template is up to Next.js `13.5.3`. Please run `pnpm update --latest` after creating your project.
+This is a simple web application that allows users to create a payment request on testnet.
 
-> [!NOTE]
-> BTW, [dependabot](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates) is already configured in the template. this should keep the project up-to-date. Moreover, with your first push to github, It will open PRs to update the dependencies.
+## Getting started
 
-[![CI-check](https://github.com/AhmedBaset/next-template/actions/workflows/CI.yml/badge.svg)](https://github.com/AhmedBaset/next-template/actions/workflows/CI.yml)
+1. ```sh
+   git clone https://github.com/vilsbole/payment-request.git
+   ```
 
-## Create a new project
+2. ```sh
+   cd payment-request
+   pnpm install
+   ```
+3. ```sh
+    pnpm dev
+   ```
 
-Copy the command below and run it in your terminal let the magic happen.
+## Heuristics
 
-```bash
-# with pnpm (recommended)
-pnpm create next-app -e https://github.com/AhmedBaset/next-template my-app
+1. The code is meant to run in a browser environment with a stable internet connection. It is written to handle this specific bitcoin testnet use case. Additional modularity may be considered if integrated into a wallet or larger application.
+2. The application is designed for an able english speaking persona with a basic understanding of cryptocurrency.
+3. Responsive design is tested on Chrome only.
+4. Since an address may receive other transactions then the created request, the payment status UX is intentionally minimal. We poll an explorer api and display a status message when polling, when a transactgion is found in the mempool or when it is confirmed.
+5. To be production ready the application would also need to consider, among other things:
 
-# with npm
-npx create-next-app -e https://github.com/AhmedBaset/next-template my-app
-
-# with yarn
-yarn create next-app -e https://github.com/AhmedBaset/next-template my-app
-```
-
-> **Note**: When you use this template, VScode will prompt you to install recommended extensions and settings.
-
-## Features
-
-- Next.js 13
-- TypeScript
-- Tailwind CSS
-- shadcn/ui & radix-ui
-- lucide-icons
-- dark/light mode
-- Environment variables type safety [Read more in `./env.mjs` file](./env.mjs)
-- Type safty for `next/link` href
-  > The experimental `typedRoutes` feature of Next.js is enabled by default. once you run `dev` or `build` command, Next.js will generate a link definition in `.next/types` that contains information about all existing routes in your application, which TypeScript can then use to provide feedback in your editor about invalid links. [Read more](https://nextjs.org/docs/app/building-your-application/configuring/typescript#statically-typed-links)
-- Github Action for checking formatting, linting and typechecking
-- VSCode recommended settings & extensions
-- ESLint
-- Prettier with sorting imports
-- Ready to use PWA [Read More in `next.config.js`](./next.config.js)
-
-## Scripts
-
-This template uses `pnpm` as the package manager. If you want to use other package managers, you can delete `pnpm-lock.yaml` and run `npm install` or `yarn install`.
-
-- `dev`: Start the development server
-- `build`: Build for production
-- `start`: Start production server
-- `preview`: build and start production server
-- `lint`: Lint code
-- `format`: Format code
-- `format:check`: Check code formatting
-- `typecheck`: Check types
-- `ci-check`: Run all checks
-
-### To install a component from `shadcn/ui` and `radix-ui`:
-
-```sh
-pnpm shadcn-ui add <component> [--overwrite]
-```
-
-## TODOs:
-
-- [ ] Configure `next-auth`
-- [ ] Configure `Prisma`
-- [ ] Configure `Husky`, `lint-staged`
+   - SEO and social media sharing considerations
+   - Core web vitals and performance optimization.
+   - Accessibility standards & Internationalization
+   - Consider an isolated execution environment for generating the HD wallet.
+   - Acceptance tests and CI/CD pipeline (can be added on request)
+   - Opt for a more stable explorer api (blockstream testnet results are inconsistent)
+   - Include request options such as an expiration date.
